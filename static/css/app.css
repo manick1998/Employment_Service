@@ -1,0 +1,38 @@
+body {
+    background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+    min-height: 100vh;
+}
+
+.hero-card {
+    border: 0;
+    border-radius: 1.5rem;
+    background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    color: #fff;
+}
+
+.section-card {
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+.badge-soft {
+    background: rgba(29, 78, 216, 0.1);
+    color: #1d4ed8;
+}
+
+.dashboard-stat {
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.06);
+}
+
+.form-help {
+    font-size: 0.9rem;
+    color: #64748b;
+}

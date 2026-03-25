@@ -1,0 +1,50 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Manage Jobs | {{ PORTAL_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+        <h1 class="h2 mb-1">Your jobs</h1>
+        <p class="text-muted mb-0">Publish, update, and close job postings safely.</p>
+    </div>
+    <a class="btn btn-primary" href="{% url 'job_create' %}">Post a job</a>
+</div>
+<div class="section-card p-4 mb-4">
+    <form method="get" class="row g-3">
+        <div class="col-md-4">{{ search_form.title.label_tag }}{{ search_form.title }}</div>
+        <div class="col-md-3">{{ search_form.location.label_tag }}{{ search_form.location }}</div>
+        <div class="col-md-3">{{ search_form.skill.label_tag }}{{ search_form.skill }}</div>
+        <div class="col-md-2">{{ search_form.status.label_tag }}{{ search_form.status }}</div>
+        <div class="col-12 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Search</button>
+            <a class="btn btn-outline-secondary" href="{% url 'recruiter_job_list' %}">Reset</a>
+        </div>
+    </form>
+</div>
+<div class="section-card p-4">
+    {% for job in jobs %}
+        <div class="border rounded-3 p-3 mb-3">
+            <div class="d-flex justify-content-between flex-wrap gap-3">
+                <div>
+                    <h2 class="h5 mb-1">{{ job.title }}</h2>
+                    <div class="text-muted small">{{ job.location }} - {{ job.get_status_display }} - {{ job.applicant_count }} applicants</div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'job_applicants' job.slug %}">Applicants</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'job_edit' job.slug %}">Edit</a>
+                    {% if job.status != job.Status.CLOSED %}
+                        <form method="post" action="{% url 'job_close' job.slug %}">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-outline-danger" type="submit">Close</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted mb-0">You have not posted any jobs yet.</p>
+    {% endfor %}
+</div>
+{% include 'partials/pagination.html' %}
+{% endblock %}

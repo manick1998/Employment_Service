@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Job Seeker Dashboard | {{ PORTAL_NAME }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
+    <div>
+        <h1 class="h2 mb-1">Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
+        <p class="text-muted mb-0">Track your profile completion, recent applications, and next steps.</p>
+    </div>
+    <a href="{% url 'job_seeker_profile_edit' %}" class="btn btn-primary">Edit profile</a>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-md-4"><div class="dashboard-stat p-4"><div class="text-muted small">Profile completion</div><div class="display-6 fw-bold">{{ profile.profile_completion }}%</div></div></div>
+    <div class="col-md-4"><div class="dashboard-stat p-4"><div class="text-muted small">Applications</div><div class="display-6 fw-bold">{{ application_count }}</div></div></div>
+    <div class="col-md-4"><div class="dashboard-stat p-4"><div class="text-muted small">Resume uploaded</div><div class="display-6 fw-bold">{% if profile.resume %}Yes{% else %}No{% endif %}</div></div></div>
+</div>
+<div class="section-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h4 mb-0">Recent applications</h2>
+        <a href="{% url 'applied_jobs' %}" class="btn btn-outline-primary btn-sm">View all</a>
+    </div>
+    {% for application in recent_applications %}
+        <div class="border rounded-3 p-3 mb-3">
+            <div class="d-flex justify-content-between flex-wrap gap-2">
+                <div>
+                    <strong>{{ application.job.title }}</strong>
+                    <div class="text-muted small">{{ application.job.company.name }}</div>
+                </div>
+                <span class="badge text-bg-light">{{ application.get_status_display }}</span>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted mb-0">You have not applied yet. Start by browsing the latest openings.</p>
+    {% endfor %}
+</div>
+{% endblock %}

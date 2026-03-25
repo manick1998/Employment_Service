@@ -1,0 +1,67 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}Home | {{ PORTAL_NAME }}{% endblock %}
+
+{% block content %}
+<section class="hero-card p-5 mb-5">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+            <span class="badge text-bg-light text-primary mb-3">Production-ready Django starter</span>
+            <h1 class="display-5 fw-bold">Build careers. Manage hiring. Learn clean architecture.</h1>
+            <p class="lead mt-3">This portal gives job seekers, recruiters, and admins a realistic workflow without adding infrastructure complexity too early.</p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="{% url 'job_list' %}" class="btn btn-light btn-lg">Browse Jobs</a>
+                <a href="{% url 'register_choice' %}" class="btn btn-outline-light btn-lg">Create Account</a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="bg-white text-dark rounded-4 p-4">
+                <h2 class="h5">Portal snapshot</h2>
+                <div class="row g-3 mt-1">
+                    <div class="col-12"><strong>{{ stats.jobs }}</strong> active jobs</div>
+                    <div class="col-12"><strong>{{ stats.companies }}</strong> companies</div>
+                    <div class="col-12"><strong>{{ stats.applications }}</strong> applications tracked</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="row g-4 mb-5">
+    <div class="col-md-4"><div class="section-card p-4 h-100"><h2 class="h5">For Job Seekers</h2><p>Create a strong profile, upload your resume, and track every application from one dashboard.</p></div></div>
+    <div class="col-md-4"><div class="section-card p-4 h-100"><h2 class="h5">For Recruiters</h2><p>Create a company page, publish jobs, and review applicants with a lightweight ATS flow.</p></div></div>
+    <div class="col-md-4"><div class="section-card p-4 h-100"><h2 class="h5">For Learning</h2><p>Use modular apps, clean forms, and reusable selectors so the codebase stays easy to grow.</p></div></div>
+</section>
+
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h3 mb-0">Featured Jobs</h2>
+        <a href="{% url 'job_list' %}" class="btn btn-outline-primary btn-sm">See all</a>
+    </div>
+    <div class="row g-4">
+        {% for job in featured_jobs %}
+            <div class="col-md-6 col-xl-4">
+                <div class="section-card p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div>
+                            <h3 class="h5"><a class="text-decoration-none" href="{% url 'job_detail' job.slug %}">{{ job.title }}</a></h3>
+                            <p class="mb-2 text-muted">{{ job.company.name }} - {{ job.location }}</p>
+                        </div>
+                        <span class="badge badge-soft">{{ job.get_experience_level_display }}</span>
+                    </div>
+                    <p>{{ job.description|truncatechars:130 }}</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for skill in job.skills.all|slice:':3' %}
+                            <span class="badge text-bg-light">{{ skill.name }}</span>
+                        {% empty %}
+                            <span class="text-muted small">Skills coming soon</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted">No jobs have been posted yet. Seed demo data or create your first recruiter account.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

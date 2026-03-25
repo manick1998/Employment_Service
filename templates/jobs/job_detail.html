@@ -1,0 +1,38 @@
+﻿{% extends 'base.html' %}
+
+{% block title %}{{ job.title }} | {{ PORTAL_NAME }}{% endblock %}
+
+{% block content %}
+<div class="section-card p-4 p-md-5">
+    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+        <div>
+            <h1 class="h2 mb-1">{{ job.title }}</h1>
+            <p class="text-muted mb-2">{{ job.company.name }} - {{ job.location }}</p>
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="badge text-bg-light">{{ job.get_employment_type_display }}</span>
+                <span class="badge text-bg-light">{{ job.get_experience_level_display }}</span>
+            </div>
+        </div>
+        {% if user.is_authenticated and user.role == user.Role.JOB_SEEKER %}
+            {% if has_applied %}
+                <a class="btn btn-outline-secondary" href="{% url 'applied_jobs' %}">Already applied</a>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'job_apply' job.slug %}">Apply now</a>
+            {% endif %}
+        {% elif not user.is_authenticated %}
+            <a class="btn btn-primary" href="{% url 'login' %}">Login to apply</a>
+        {% endif %}
+    </div>
+    <hr>
+    <h2 class="h5">Job description</h2>
+    <p>{{ job.description|linebreaks }}</p>
+    <h2 class="h5 mt-4">Skills</h2>
+    <div class="d-flex flex-wrap gap-2">
+        {% for skill in job.skills.all %}
+            <span class="badge text-bg-light">{{ skill.name }}</span>
+        {% empty %}
+            <span class="text-muted">No specific skills listed.</span>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
