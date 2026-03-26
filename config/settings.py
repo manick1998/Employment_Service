@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-@x0xd9*l(z#8@bomhc-79#kfmy$ce_qyrtpft#@$bk9&ky0q@v
 DEBUG = False
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*']
-
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['employment-service.onrender.com']
 # Application definition
 
 INSTALLED_APPS = [
@@ -67,6 +67,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
@@ -79,6 +80,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation
